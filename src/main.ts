@@ -1,72 +1,54 @@
 import { Chart } from "chart.js/auto";
 import type { ChartConfiguration } from "chart.js/auto";
 
-interface StudyData {
-  hours: number;
-  score: number;
+interface Status{
+  label:string;
+  value:number;
 }
-
-const studyResults: StudyData[] = [
-  { hours: 2, score: 40 },
-  { hours: 5, score: 55 },
-  { hours: 10, score: 65 },
-  { hours: 15, score: 85 },
-  { hours: 20, score: 95 }
+const characterStatus: Status[] = [
+  { label: "攻撃力", value: 80 },
+  { label: "防御力", value: 60 },
+  { label: "素早さ", value: 90 },
+  { label: "魔法力", value: 40 },
+  { label: "運", value: 70 }
 ];
 
 const canvas = document.querySelector<HTMLCanvasElement>("#canvas");
 function init(){
   if(!canvas){
-    throw new Error();
+    return;
   }
-  renderChart(canvas, studyResults, "学習時間とスコアの相関");
+  renderChart(canvas, characterStatus);
 }
 
-
-function setChartConfig(data:StudyData[], chartTitle:string):ChartConfiguration<"scatter">{
-  const chartConfig:ChartConfiguration<"scatter"> = {
-    type:"scatter",
+function setRadarConfig(characterStatus:Status[]):ChartConfiguration<"radar">{
+  const chartConfig:ChartConfiguration<"radar"> = {
+    type:"radar",
     data:{
+      labels:characterStatus.map(status => status.label),
       datasets:[{
-        data:data.map(d => ({x:d.hours, y:d.score}))
+        data:characterStatus.map(status => status.value),
+        backgroundColor: "rgba(160, 216, 239, 0.5)"
       }]
     },
     options:{
       scales:{
-        x:{
+        r:{
           min:0,
-          title:{
-            display:true,
-            text:"勉強時間(h)"
-          }
-        },
-        y:{
-          min:0,
-          title:{
-            display:true,
-            text:"テスト正解率(%)"
-          }
-        }
-      },
-      plugins:{
-        title:{
-          display:true,
-          text:chartTitle
-        },
-        legend:{
-          display:false
+          max:100
         }
       }
     }
   }
   return chartConfig;
 }
-function renderChart(canvas:HTMLCanvasElement, data:StudyData[], chartTitle:string):void{
+
+function renderChart(canvas:HTMLCanvasElement, characterStatus:Status[]){
   const renderedChart = Chart.getChart(canvas);
   if(renderedChart){
     renderedChart.destroy();
   }
-  const chartConfig = setChartConfig(data, chartTitle);
+  const chartConfig = setRadarConfig(characterStatus);
   new Chart(canvas, chartConfig);
 }
 
