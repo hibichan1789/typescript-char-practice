@@ -1,0 +1,15 @@
+.env
+
+node_modules/
+dist/
+
+.gitignore
+.git/
+
+.vscode/
+
+Dockerfile
+docker-compose.yml
+.dockerignore
+public/
+*data/
