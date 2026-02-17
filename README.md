@@ -1,5 +1,5 @@
 # typescriptでchart.jsの練習
-
+このプロジェクトは[Open-Meteo](https://open-meteo.com/)のパブリックAPIを使用しているため、APIキー等の秘匿情報は含んでいません  
 ## 大事なこと
 tooltip:{   
     callbacks:{  
